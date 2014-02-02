@@ -2,13 +2,13 @@
 
 My code for Kaggle-CIFAR-10 competition.
 
-## Build Requirements
+## Dependencies
 
 - [libnv develop branch](https://github.com/nagadomi/nv/tree/develop)</a>
 
 ### kmeans/
 
-an implementation of "Coates, A., Lee, H., and Ng, A. Y. An analysis of single-layer networks in unsupervised feature learning. In AISTATS 14, 2011.".
+an implementation of "Coates, A., Lee, H., and Ng, A. Y. An analysis of single-layer networks in unsupervised feature learning. In AISTATS 14, 2011."
 
 <table>
   <tbody>
@@ -22,7 +22,7 @@ an implementation of "Coates, A., Lee, H., and Ng, A. Y. An analysis of single-l
       <td>Classifier</td><td>2-Layer NN</td>
     </tr>
     <tr>
-      <td>Result</td><td>0.81670</td>
+      <td>Result</td><td>0.81960</td>
     </tr>
   </tbody>
 </table>
