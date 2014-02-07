@@ -8,6 +8,7 @@
 
 #define LOAD_DATA 0
 #define LOAD_MLP 0
+#define TRAIN_MLP 0
 
 static void
 extract_features(int augmentation,
@@ -76,7 +77,7 @@ main(void)
 	
 	std::vector<fileinfo_t> train_list, test_list;
 #if LOAD_DATA
-#if !LOAD_MLP
+#if TRAIN_MLP
 	train_data = nv_load_matrix_bin("train_data.mat");
 	train_labels = nv_load_matrix_bin("train_labels.mat");
 #endif
@@ -111,26 +112,45 @@ main(void)
 			   train_data->m, test_data->m, train_data->n);
 	}
 #if LOAD_MLP
-	mlp = nv_load_mlp("epoch_4.mlp");
+	mlp = nv_load_mlp("epoch_1.mlp");
 	printf("%p\n", mlp);
 	printf("%d %d %d %f\n", mlp->input, mlp->hidden, mlp->output, mlp->dropout);
-#else
-	mlp = nv_mlp_alloc(train_data->n, HIDDEN_UNIT, CLASS);
-	nv_mlp_init(mlp, train_data);
+#if TRAIN_MLP
 	nv_mlp_dropout(mlp, 0.5f);
-	nv_mlp_drop_connect(mlp, 0.2f);
+	nv_mlp_noise(mlp, 0.2f);
 	nv_mlp_progress(1);
 	ir = 0.0002f;
 	hr = 0.0002f;
-	for (i = 0; i < 10; ++i) {
+	for (i = TRAIN_MLP; i < 3; ++i) {
 		char file[256];
 		
-		if (i >= 9) {
+		if (i >= 2) {
 			ir = 0.00005f;
 			hr = 0.00005f;
 		}
 		nv_mlp_train_ex(mlp, train_data, train_labels, ir, hr,
-						i * 100, (1 + i) * 100, 1000);
+						i * 50, (1 + i) * 50, 150);
+		nv_snprintf(file, sizeof(file), "epoch_%d.mlp", i);
+		nv_save_mlp(file, mlp);
+	}
+#endif
+#else
+	mlp = nv_mlp_alloc(train_data->n, HIDDEN_UNIT, CLASS);
+	nv_mlp_init(mlp, train_data);
+	nv_mlp_dropout(mlp, 0.5f);
+	nv_mlp_noise(mlp, 0.2f);
+	nv_mlp_progress(1);
+	ir = 0.0002f;
+	hr = 0.0002f;
+	for (i = 0; i < 5; ++i) {
+		char file[256];
+		
+		if (i >= 4) {
+			ir = 0.00005f;
+			hr = 0.00005f;
+		}
+		nv_mlp_train_ex(mlp, train_data, train_labels, ir, hr,
+						i * 100, (1 + i) * 100, 500);
 		nv_snprintf(file, sizeof(file), "epoch_%d.mlp", i);
 		nv_save_mlp(file, mlp);
 	}

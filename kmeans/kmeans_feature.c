@@ -62,7 +62,13 @@ kmeans_feature(nv_matrix_t *fv, int fv_j,
 				for (k = 0; k < centroids->m; ++k) {
 					float v = mean - NV_MAT_V(z, 0, k);
 					if (0.0f < v) {
-						NV_MAT_V(conv, conv_index, k) += v; // sub region
+#if TRIANGLE_DISTANCE_MAX						
+						if (NV_MAT_V(conv, conv_index, k) < v) {
+							NV_MAT_V(conv, conv_index, k) = v;
+						}
+#else
+						NV_MAT_V(conv, conv_index, k) += v;
+#endif
 					}
 				}
 			}

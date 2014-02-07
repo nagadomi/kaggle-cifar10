@@ -3,11 +3,11 @@
 #define TRAIN_FILE "../data/train.txt"
 #define TEST_FILE "../data/test.txt"
 #define CENTROIDS 4000
-//#define CENTROIDS 2048
 #define SAMPLES (CENTROIDS * 300)
 #define GRID 4
 #define TRIANGLE_DISTANCE 1
 #define TRIANGLE_DISTANCE_HALF 0
+#define TRIANGLE_DISTANCE_MAX 0
 #define DATA_N (CENTROIDS * (GRID))
 #define CLASS 10
 #define HIDDEN_UNIT 512

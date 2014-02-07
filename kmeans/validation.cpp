@@ -8,7 +8,7 @@
 
 #define TRAIN_M(data) (data->m / 5 * 4)
 
-#define LOAD_DATA 0
+#define LOAD_DATA 1
 
 static void
 validation(const nv_mlp_t *mlp,
@@ -108,7 +108,7 @@ main(void)
 	mlp = nv_mlp_alloc(train_data->n, HIDDEN_UNIT, CLASS);
 	nv_mlp_init(mlp, train_data);
 	nv_mlp_dropout(mlp, 0.5f);
-	nv_mlp_drop_connect(mlp, 0.2f);
+	nv_mlp_noise(mlp, 0.2f);
 	nv_mlp_progress(1);
 	ir = 0.0003f;
 	hr = 0.0003f;
